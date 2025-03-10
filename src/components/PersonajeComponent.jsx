@@ -1,7 +1,8 @@
 const PersonajeComponent = ({ personaje }) => {
+  const baseURL = import.meta.env.BASE_URL;
   return (
     <a
-      href={`/personaje/${personaje.id}`}
+      href={`${baseURL}personaje/${personaje.id}`}
       className="cursor-pointer bg-white shadow-lg rounded-lg overflow-hidden flex flex-col justify-center items-center p-5 hover:shadow-2xl transition duration-300 ease-in-out transform hover:scale-105"
     >
       {/* Imagen */}
