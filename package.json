@@ -20,6 +20,7 @@
     "tailwindcss": "^4.0.12"
   },
   "devDependencies": {
+    "@astrojs/vercel": "^8.1.1",
     "gh-pages": "^6.3.0"
   }
 }
