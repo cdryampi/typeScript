@@ -1,4 +1,5 @@
 ---
+export const prerender = false;
 const { race } = Astro.params ?? '';
 
 import '../../styles/global.css';
@@ -11,13 +12,7 @@ import Personaje from '../../models/Personaje';
 import { getPersonajesByRace } from "../../services/getPersonajes";
 
 const personajes:Personaje[] = await getPersonajesByRace(race || '');
-export async function getStaticPaths() {
-  const races = ["Human","Saiyan","Namekian", "Majin" ,"Frieza Race", "Android" ,"Jiren Race","God Angel" ,"Evil" ,"Nucleico" ,"Nucleico", "benigno" ,"Unknown"];
-  return races.map((race) => ({
-    params: { race },
-    props: { race },
-  }));
-}
+
 ---
 <Layout>
     <Header/>

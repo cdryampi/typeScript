@@ -1,5 +1,5 @@
 ---
-const { gender } = Astro.params ?? '';
+
 
 import '../../styles/global.css';
 import Layout from "../../layouts/Layout.astro";
@@ -10,10 +10,11 @@ import Personaje from '../../models/Personaje';
 // api
 import { getPersonajesByGender } from "../../services/getPersonajes";
 
+const { gender } = Astro.props;
 const personajes:Personaje[] = await getPersonajesByGender(gender || '');
 export async function getStaticPaths() {
-  const genders = ["Male","Female", "Unknown"];
-  return genders.map((gender) => ({
+  const afiliaciones = ["Male","Female", "Unknown"];
+  return afiliaciones.map((gender) => ({
     params: { gender },
     props: { gender },
   }));

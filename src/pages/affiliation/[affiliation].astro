@@ -10,8 +10,9 @@ import { getPersonajesByAffiliation } from "../../services/getPersonajes";
 const { affiliation } = Astro.props;
 const personajes = await getPersonajesByAffiliation(affiliation || '');
 
+// 🔹 Generar rutas estáticas para afiliaciones específicas
 export async function getStaticPaths() {
-  const afiliaciones = ["Z Fighter", "Red Ribbon Army", "Namekian Warrior", "Freelancer", "Army of Frieza", "Pride Troopers", "Assistant of Vermoud", "God", "Assistant of Beerus", "Villain", "Other"]; // ⚠️ Agrega más afiliaciones aquí si las tienes
+  const afiliaciones = ["saiyans", "namekianos", "humanos"]; // ⚠️ Agrega más afiliaciones aquí si las tienes
 
   return afiliaciones.map((affiliation) => ({
     params: { affiliation },
