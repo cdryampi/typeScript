@@ -1,5 +1,4 @@
 ---
-export const prerender = false;
 const { gender } = Astro.params ?? '';
 
 import '../../styles/global.css';
@@ -12,6 +11,13 @@ import Personaje from '../../models/Personaje';
 import { getPersonajesByGender } from "../../services/getPersonajes";
 
 const personajes:Personaje[] = await getPersonajesByGender(gender || '');
+export async function getStaticPaths() {
+  const genders = ["Male","Female", "Unknown"];
+  return genders.map((gender) => ({
+    params: { gender },
+    props: { gender },
+  }));
+}
 ---
 <Layout>
     <Header/>

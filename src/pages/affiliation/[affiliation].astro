@@ -1,18 +1,25 @@
 ---
-export const prerender = false;
-const { affiliation } = Astro.params ?? '';
-
 import '../../styles/global.css';
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import PersonajeComponent from '../../components/PersonajeComponent';
-import Personaje from '../../models/Personaje';
-// api
 import { getPersonajesByAffiliation } from "../../services/getPersonajes";
 
-const personajes:Personaje[] = await getPersonajesByAffiliation(affiliation || '');
+// 🔹 Obtener la afiliación desde `Astro.props` en lugar de `Astro.params`
+const { affiliation } = Astro.props;
+const personajes = await getPersonajesByAffiliation(affiliation || '');
+
+export async function getStaticPaths() {
+  const afiliaciones = ["Z Fighter", "Red Ribbon Army", "Namekian Warrior", "Freelancer", "Army of Frieza", "Pride Troopers", "Assistant of Vermoud", "God", "Assistant of Beerus", "Villain", "Other"]; // ⚠️ Agrega más afiliaciones aquí si las tienes
+
+  return afiliaciones.map((affiliation) => ({
+    params: { affiliation },
+    props: { affiliation },
+  }));
+}
 ---
+
 <Layout>
     <Header/>
     <div class="container mx-auto p-5 justify-center">

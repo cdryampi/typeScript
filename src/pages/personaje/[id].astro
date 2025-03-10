@@ -1,5 +1,4 @@
 ---
-export const prerender = false;
 const { id } = Astro.params ?? '';
 import '../../styles/global.css';
 import Layout from "../../layouts/Layout.astro";
@@ -9,7 +8,22 @@ import Personaje from '../../models/Personaje';
 // api
 import { getPersonaje } from "../../services/getPersonajes";
 
-const personaje:Personaje = await getPersonaje(id || '');
+const personaje:Personaje = await getPersonaje(String(id) || '');
+
+
+export async function getStaticPaths() {
+  const ids = [
+  ];
+
+  for (let i = 1; i <= 58; i++) {
+    ids.push(i);
+  }
+  return ids.map((id) => ({
+    params: { id },
+    props: { id },
+  }));
+}
+
 
 ---
 <Layout>
