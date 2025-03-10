@@ -1,3 +1,5 @@
+import Transformation from "./Transformation";
+import { OriginPlanet } from "./OriginPlanet";
 export default class Personaje {
   id: number;
   name: string;
@@ -8,6 +10,8 @@ export default class Personaje {
   affiliation: string;
   description: string;
   image: string;
+  transformations: Transformation[];
+  originPlanet: OriginPlanet;
 
   constructor(
     _id: number,
@@ -29,6 +33,8 @@ export default class Personaje {
     this.affiliation = _afilliation;
     this.description = _description;
     this.image = _image;
+    this.transformations = [];
+    this.originPlanet = new OriginPlanet(0, "", false, "", "");
   }
 
   getDescripcion(): string {
@@ -36,5 +42,14 @@ export default class Personaje {
     let description = this.description.slice(0, 100);
     description += "...";
     return description;
+  }
+
+  pushTransformation(transformation: Transformation) {
+    this.transformations.push(transformation);
+    console.log("Transformación añadida: ", transformation);
+  }
+  setOriginPlanet(originPlanet: OriginPlanet) {
+    this.originPlanet = originPlanet;
+    console.log("Planeta de origen añadido: ", originPlanet);
   }
 }

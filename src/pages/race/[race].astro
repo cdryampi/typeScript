@@ -1,0 +1,26 @@
+---
+export const prerender = false;
+const { race } = Astro.params ?? '';
+
+import '../../styles/global.css';
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import PersonajeComponent from '../../components/PersonajeComponent';
+import Personaje from '../../models/Personaje';
+// api
+import { getPersonajesByRace } from "../../services/getPersonajes";
+
+const personajes:Personaje[] = await getPersonajesByRace(race || '');
+---
+<Layout>
+    <Header/>
+    <div class="container mx-auto p-5 justify-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-15">
+            {personajes.map((personaje) => (
+                <PersonajeComponent personaje={personaje} />
+            ))}
+        </div>
+    </div>
+    <Footer/>
+</Layout>

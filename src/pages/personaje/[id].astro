@@ -1,0 +1,88 @@
+---
+export const prerender = false;
+const { id } = Astro.params ?? '';
+import '../../styles/global.css';
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import Personaje from '../../models/Personaje';
+// api
+import { getPersonaje } from "../../services/getPersonajes";
+
+const personaje:Personaje = await getPersonaje(id || '');
+
+---
+<Layout>
+    <Header />
+    <div class="flex flex-col justify-center items-center p-0">
+        <div class="bg-black w-full h-96 flex justify-center items-center">
+            <div class="relative w-70 h-80 mb-10 flex justify-center items-center">
+                <!-- Imagen principal -->
+                <img id="image-main"
+                     class="w-full h-full object-contain transition-opacity duration-1000 opacity-100" 
+                     src={personaje.image} 
+                     alt="Personaje Base" />
+        
+                <!-- Imágenes de transformaciones -->
+                {personaje.transformations.map((transformation, index) => (
+                    <img id={`image-${index}`}
+                         class="w-full h-full object-contain transition-opacity duration-1000 opacity-0" 
+                         src={transformation.image} 
+                         alt={transformation.name} />
+                ))}
+            </div>
+        </div>
+
+        <!-- tags -->
+        <div class="flex flex-wrap justify-center items-center gap-3.5 my-10">
+            <a href={`/gender/${personaje.gender}`} class="inline-flex items-center rounded-md bg-white px-5 py-3 text-xl uppercase font-bold text-amber-500 ring-1 ring-gray-500/10 ring-inset cursor-pointer hover:bg-amber-500 hover:text-white">
+            {personaje.gender}
+            </a>
+            <a href={`/race/${personaje.race}`} class="inline-flex items-center rounded-md bg-white px-5 py-3 text-xl uppercase font-bold text-amber-500 ring-1 ring-gray-500/10 ring-inset cursor-pointer hover:bg-amber-500 hover:text-white">
+                {personaje.race}
+                </a>
+                <a href={`/affiliation/${personaje.affiliation}`} class="inline-flex items-center rounded-md bg-white px-5 py-3 text-xl uppercase font-bold text-amber-500 ring-1 ring-gray-500/10 ring-inset cursor-pointer hover:bg-amber-500 hover:text-white">
+                    {personaje.affiliation}
+                    </a>
+        </div>
+
+        <h1 class="text-8xl font-bold text-amber-500 my-10">{personaje.name}</h1>
+        <p class="px-15 py-5 text-3xl tracking-widest leading-15">Este es el personaje {personaje.description}</p>
+        <p class="px-15 py-5 text-3xl tracking-widest leading-15">Este personaje es de la raza: <span class="text-5xl text-amber-500 block text-center font-bold">{personaje.race}</span></p>
+        <p class="px-15 py-5 text-3xl tracking-normal leading-15">Ki Base: <span class="text-3xl text-amber-500">{personaje.ki}</span></p>
+        <p class="px-15 py-5 text-3xl tracking-normal leading-15">Ki maximo: <span class="text-3xl text-amber-500">{personaje.maxKi}</span></p>
+        <hr class="w-1/2 border-2 border-amber-500 my-10" />
+        <div class="flex flex-col justify-center items-center mt-10">
+            <p class="px-15 py-2 text-3xl tracking-normal leading-15">
+                Planeta de origen: <span class="text-3xl text-amber-500">{personaje.originPlanet.name}</span>
+            </p>
+            <div class="relative w-150 h-150 mx-10">
+                <img class="w-full h-full object-contain" src={personaje.originPlanet.image} alt={personaje.originPlanet.name} />
+            </div>
+            <p class="px-15 py-5 text-3xl tracking-normal leading-15">
+                {personaje.originPlanet.description}
+            </p>
+            <p class="px-15 py-5 text-3xl tracking-normal leading-15">
+                Estado del planeta de origen: <span class="text-3xl text-amber-500">
+                    {personaje.originPlanet.isDestroyed ? 'Destruido' : 'con vida'}
+                </span>
+            </p>
+        </div>
+    </div>
+    <Footer />
+</Layout>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const images = document.querySelectorAll("img[id^='image-']");
+        let currentIndex = 0;
+        
+        setInterval(() => {
+            images.forEach((img, i) => {
+                img.classList.toggle("opacity-100", i === currentIndex);
+                img.classList.toggle("opacity-0", i !== currentIndex);
+            });
+
+            currentIndex = (currentIndex + 1) % images.length;
+        }, 1500); // Cambia cada 1.5 segundos
+    });
+</script>

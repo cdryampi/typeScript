@@ -15,4 +15,8 @@ export class APISchema {
     this.meta = _meta;
     this.limit = config.LIMIT;
   }
+
+  clearItems() {
+    this.items = [];
+  }
 }
